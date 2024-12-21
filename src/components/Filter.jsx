@@ -1,6 +1,7 @@
-import React from 'react'
+import React from "react";
 import { AiOutlineDown } from "react-icons/ai";
 function Filter({ regions, selectedRegion, handleFilter, isLight }) {
+    
   return (
     <div className="relative lg:w-[15%] lg:mr-14">
       <AiOutlineDown
@@ -26,7 +27,7 @@ function Filter({ regions, selectedRegion, handleFilter, isLight }) {
         ))}
       </select>
     </div>
-  )
+  );
 }
 
-export default Filter
+export default Filter;

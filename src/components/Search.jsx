@@ -1,14 +1,11 @@
-import React from 'react'
+import React from "react";
+import searchIcon from "../assets/images/searchIcon.png";
 
-function Search({ search, setSearch, handleSearchSubmit, isLight }) { 
-    const handleSearchChange = (event) => {
-        setSearch(event.target.value);
-        handleSearchSubmit();
-      };
+function Search({ search, handleSearchChange, isLight }) {
   return (
     <div className="relative mt-8 ml-8 mr-8 lg:w-[50%]">
       <img
-        src="/searchIcon.png"
+        src={searchIcon}
         alt="Search Icon"
         className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
       />
@@ -22,7 +19,7 @@ function Search({ search, setSearch, handleSearchSubmit, isLight }) {
         placeholder="Search for a country..."
       />
     </div>
-  )
+  );
 }
 
-export default Search
+export default Search;

@@ -8,12 +8,13 @@ import Search from "../components/Search";
 import Filter from "../components/Filter";
 
 function Home() {
+
   const [countries, setCountries] = useState([]);
   const [regions, setRegions] = useState([]);
   const [search, setSearch] = useState("");
   const [wholeData, setWholeData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("");
-  const [isLight,setIsLight]=useState(true);
+  const [isLight, setIsLight] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -61,6 +62,7 @@ function Home() {
       console.error(err);
     }
   };
+
   const handleSearchSubmit = async () => {
     try {
       let filteredCountries = wholeData;
@@ -80,21 +82,22 @@ function Home() {
     } catch (err) {
       console.error(err);
     }
-  }; 
-  const handleMode=()=>{ 
-    setIsLight(!isLight)
-
-  }
-  return ( 
+  };
+  
+  const handleMode = () => {
+    setIsLight(!isLight);
+  };
+  return (
     <div className="flex flex-col justify-center items-center bg-gray-200 min-h-screen font-nunito">
-      <div className={`m-8 
-        ${isLight ? "bg-[hsl(0,0%,98%)]" : "bg-gray-700"}`}>
+      <div
+        className={`m-8 
+        ${isLight ? "bg-[hsl(0,0%,98%)]" : "bg-gray-700"}`}
+      >
         <Header isLight={isLight} handleMode={handleMode} />
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:w-full"> 
-        <Search
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:w-full">
+          <Search
             search={search}
-            setSearch={setSearch}
-            handleSearchSubmit={handleSearchSubmit}
+            handleSearchChange={handleSearchChange}
             isLight={isLight}
           />
           <Filter
@@ -103,16 +106,19 @@ function Home() {
             handleFilter={handleFilter}
             isLight={isLight}
           />
-        </div> 
+        </div>
         {loading ? (
-          <Loader/>
-        ) :  
-        <CountryCard countries={countries} isLight={isLight} wholeCountries={wholeData} />
-        }
+          <Loader />
+        ) : (
+          <CountryCard
+            countries={countries}
+            isLight={isLight}
+            wholeCountries={wholeData}
+          />
+        )}
       </div>
     </div>
   );
 }
-  
 
 export default Home;
