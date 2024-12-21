@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function CountryCard({ countries, isLight }) {
+function CountryCard({ countries, isLight,wholeCountries }) {
     const navigate = useNavigate();
     const handleClick = (country) => {
         // Navigates to the details page with the country name
-        navigate(`/details`,{ state: { country } });
+        navigate(`/detail`,{ state: { country ,wholeCountries} });
       };
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8  ${isLight ? " bg-[hsl(0,0%,98%)]" : "bg-gray-800  border-none"}`}>

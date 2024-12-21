@@ -107,7 +107,7 @@ function Home() {
         {loading ? (
           <Loader/>
         ) :  
-        <CountryCard countries={countries} isLight={isLight} />
+        <CountryCard countries={countries} isLight={isLight} wholeCountries={wholeData} />
         }
       </div>
     </div>
