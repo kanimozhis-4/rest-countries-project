@@ -2,11 +2,11 @@ import React from "react";
 import BorderCountries from "./BorderCountries";
 
 function CountryDetail({ country, borders, wholeCountries, isLight }) {
-    
+
   const sortedLanguages = country?.languages
     ? Object.values(country.languages).sort()
     : [];
-  console.log("country", country);
+//   console.log("country", country);
 
   return (
     <div className="lg:w-[75%] lg:ml-20 ">

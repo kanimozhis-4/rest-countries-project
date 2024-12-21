@@ -7,7 +7,7 @@ function CountryCard({ countries, isLight, wholeCountries }) {
   const handleClick = (country) => {
     navigate(`/detail`, { state: { country, wholeCountries } });
   };
-  
+
   return (
     <div
       className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8  ${
@@ -16,7 +16,7 @@ function CountryCard({ countries, isLight, wholeCountries }) {
     >
       {countries.length === 0 ? (
         <div
-          className={`text-xl font-semibold text-center col-span-full flex justify-center items-center h-96  ${
+          className={`text-xl font-semibold text-center col-span-full flex justify-center items-center h-96   ${
             isLight ? "text-black" : "text-white"
           }`}
         >

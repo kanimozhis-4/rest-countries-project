@@ -83,7 +83,7 @@ function Home() {
       console.error(err);
     }
   };
-  
+
   const handleMode = () => {
     setIsLight(!isLight);
   };
@@ -91,6 +91,7 @@ function Home() {
     <div className="flex flex-col justify-center items-center bg-gray-200 min-h-screen font-nunito">
       <div
         className={`m-8 
+          ${countries.length===0 ?"w-[90%] ":""}
         ${isLight ? "bg-[hsl(0,0%,98%)]" : "bg-gray-700"}`}
       >
         <Header isLight={isLight} handleMode={handleMode} />
