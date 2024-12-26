@@ -13,12 +13,13 @@ function Home() {
   const { isLight } = useContext(ThemeContext);
 
   const [search, setSearch] = useState("");
-  const [wholeData, setWholeData] = useState([]);
+  const [allCountries, setAllCountries] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedSubRegion, setSelectedSubRegion] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedSort, setSelectedSort] = useState("");
   const [error, setError] = useState(null);
+  const [selectedLanguage, setSelectedLannguage] = useState("");
   const sortOptions = [
     "Population ASC",
     "Population DESC",
@@ -29,22 +30,30 @@ function Home() {
     fetchInitalData();
   }, []);
 
+  const languageFilter = [
+    ...new Set(
+      allCountries.flatMap((country) => {
+        return country.languages ? Object.values(country.languages) : [];
+      })
+    ),
+  ];
+
   const regions = [
-    ...new Set(wholeData?.map((country) => country.region)),
+    ...new Set(allCountries?.map((country) => country.region)),
   ].filter((region) => region);
 
   const subRegions =
     selectedRegion !== ""
       ? [
           ...new Set(
-            wholeData
+            allCountries
               ?.filter((country) => country.region === selectedRegion)
               .map((country) => country?.subregion)
           ),
         ].filter((subregion) => subregion)
       : [];
 
-  let countries = wholeData.filter((country) => {
+  let countries = allCountries.filter((country) => {
     const matchesRegion =
       selectedRegion === "" ||
       country.region.toLowerCase() === selectedRegion.toLowerCase();
@@ -54,7 +63,22 @@ function Home() {
     const matchesSearch =
       search.trim() === "" ||
       country.name.common.toLowerCase().includes(search.toLowerCase());
-    return matchesRegion && matchesSubRegion && matchesSearch;
+    const matchesLanguage = country?.languages
+      ? Object.values(country.languages).some((language) => {
+          if (!language) return false;
+          if (selectedLanguage === "") {
+            return true;
+          }
+          return (
+            language.trim().toLowerCase() ===
+            selectedLanguage.trim().toLowerCase()
+          );
+        })
+      : false;
+
+    return (
+      matchesRegion && matchesSubRegion && matchesSearch && matchesLanguage
+    );
   });
 
   if (selectedSort === "Population ASC") {
@@ -71,13 +95,12 @@ function Home() {
     try {
       setLoading(true);
       const data = await fetchCountries();
-      setWholeData(data);
+      setAllCountries(data);
       setLoading(false);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch countries. Please try again later.");
-    } 
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -85,7 +108,15 @@ function Home() {
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
   };
-
+  const handleFilterLanguage = (event) => {
+    try {
+      const language = event.target.value;
+      setSelectedLannguage(language);
+    } catch (err) {
+      setError("Error filtering by language.");
+      console.error(err);
+    }
+  };
   const handleFilterRegion = (event) => {
     try {
       const region = event.target.value;
@@ -125,21 +156,28 @@ function Home() {
           <Search search={search} handleSearchChange={handleSearchChange} />
           <div className=" flex flex-row  ">
             <Filter
-              regions={regions}
+              options={languageFilter}
+              selected={selectedLanguage}
+              handleFilter={handleFilterLanguage}
+              isDisabled={false}
+              template={"Language By"}
+            />
+            <Filter
+              options={regions}
               selected={selectedRegion}
               handleFilter={handleFilterRegion}
               isDisabled={false}
               template={"Region"}
             />
             <Filter
-              regions={subRegions}
+              options={subRegions}
               selected={selectedSubRegion}
               handleFilter={handleFilterSubRegion}
-              isDisabled={selectedRegion === "" || subRegions.length===0}
+              isDisabled={selectedRegion === "" || subRegions.length === 0}
               template={"Sub-Region"}
             />
             <Filter
-              regions={sortOptions}
+              options={sortOptions}
               selected={selectedSort}
               handleFilter={handleSort}
               template={"Sort By"}
@@ -151,11 +189,10 @@ function Home() {
             <FaExclamationTriangle className="text-red-500 text-2xl" />
             <span>{error}</span>
           </div>
-        ) :
-        loading ? (
+        ) : loading ? (
           <Loader />
         ) : (
-          <CountryCard countries={countries} wholeCountries={wholeData} />
+          <CountryCard countries={countries} />
         )}
       </div>
     </div>

@@ -2,14 +2,12 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../ThemeMode";
 
-function CountryCard({ countries, wholeCountries }) {
+function CountryCard({ countries }) {
   const { isLight } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const handleClick = (country) => {
-    navigate(`/country/${country?.ccn3}`, {
-      state: { country, wholeCountries },
-    });
+    navigate(`/country/${country?.ccn3}`);
   };
 
   return (
@@ -54,6 +52,12 @@ function CountryCard({ countries, wholeCountries }) {
               </p>
               <p className="text-lg">
                 <strong>Capital:</strong> {country.capital?.[0] || "N/A"}
+              </p>
+              <p className="text-lg">
+                <strong>Languages:</strong>
+                {country?.languages
+                  ? Object.values(country.languages).join(", ") || "N/A"
+                  : "N/A"}
               </p>
             </div>
           </div>

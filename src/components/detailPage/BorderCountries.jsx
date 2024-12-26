@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "../ThemeMode";
 import { useNavigate } from "react-router-dom";
 
-function BorderCountries({ borders, wholeCountries }) {
+function BorderCountries({ borders, allCountries }) {
   const { isLight } = useContext(ThemeContext);
   const navigate = useNavigate();
 
@@ -18,16 +18,14 @@ function BorderCountries({ borders, wholeCountries }) {
   const borderCountries = borders
     ? borders
         .map((borderCode) => {
-          return wholeCountries.find((country) => country.cca3 === borderCode);
+          return allCountries.find((country) => country.cca3 === borderCode);
         })
         .filter((borderCountry) => borderCountry !== undefined)
         .sort((a, b) => a.name.common.localeCompare(b.name.common))
     : [];
 
   const handleClick = (borderCountry) => {
-    navigate(`/country/${borderCountry?.ccn3}`, {
-      state: { country: borderCountry, wholeCountries },
-    });
+    navigate(`/country/${borderCountry?.ccn3}`);
   };
 
   return (

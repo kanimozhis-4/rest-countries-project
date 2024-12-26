@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "../ThemeMode";
-function Filter({ regions, selected, handleFilter, isDisabled, template }) {
+function Filter({ options, selected, handleFilter, isDisabled, template }) {
   const { isLight } = useContext(ThemeContext);
 
   return (
@@ -17,12 +17,12 @@ function Filter({ regions, selected, handleFilter, isDisabled, template }) {
       onChange={handleFilter}
       disabled={isDisabled}
     >
-      {selected === "" && (
+    
         <option value="" disabled>
           {template}
         </option>
-      )}
-      {regions?.map((region, index) => (
+      
+      {options?.map((region, index) => (
         <option key={index} value={region}>
           {region}
         </option>

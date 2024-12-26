@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/homePage/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import CountryDetail from "../components/detailPage/CountryDetail";
 import { ThemeContext } from "../components/ThemeMode";
 import { useContext } from "react";
+import { fetchCountries, fetchCountryById } from "../services/countriesService";
+import { useParams } from "react-router-dom";
+import Loader from "../components/homePage/Loader";
 function Details() {
   const { isLight } = useContext(ThemeContext);
-  const { state } = useLocation();
-  const { country, wholeCountries } = state || {};
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const [country, setCountry] = useState([]);
+  const [allCountries, SetAllCountries] = useState([]);
+  useEffect(() => {
+    if (id) {
+      getDetailById();
+    }
+  }, [id]);
+  const getDetailById = async () => {
+    try {
+      setLoading(true);
+      const wholeData = await fetchCountries();
+      SetAllCountries(wholeData);
+      const countryData = await fetchCountryById(id);
+
+      setCountry(countryData[0]);
+    } catch (error) {
+      console.error("Failed to fetch country details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const navigate = useNavigate();
 
   const handleBackClick = () => {
     navigate("/");
   };
-  console.log("country", country);
 
   const borders = country?.borders;
   return (
@@ -39,18 +62,23 @@ function Details() {
                : "bg-gray-800 text-white"
            } p-8 rounded-lg shadow-md`}
         >
-          <div className="flex flex-col lg:flex-row lg:w-full ">
-            <img
-              src={country?.flags?.png}
-              alt={country?.name?.common}
-              className="w-full h-40 object-cover rounded-md mt-4  lg:mr-6 lg:h-80 lg:w-[35%]"
-            />
-            <CountryDetail
-              country={country}
-              borders={borders}
-              wholeCountries={wholeCountries}
-            />
-          </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="flex flex-col lg:flex-row lg:w-full ">
+              <img
+                src={country?.flags?.png}
+                alt={country?.name?.common}
+                className="w-full h-40 object-cover rounded-md mt-4  lg:mr-6 lg:h-80 lg:w-[35%]"
+              />
+              <CountryDetail
+                key={id}
+                country={country}
+                borders={borders}
+                allCountries={allCountries}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

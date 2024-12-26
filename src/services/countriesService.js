@@ -11,3 +11,14 @@ export const fetchCountries = async (payload = null) => {
     console.log('Error fetching countries:', err.message);
   }
 }; 
+export const fetchCountryById = async (id) => {
+  try {
+    const url=`https://restcountries.com/v3.1/alpha/${id}`
+    const method='GET'
+    const response = await clientCall(url, method, null);
+    return response.data
+   
+  } catch (error) {
+    console.error("Error fetching country details:", error);
+  }
+};

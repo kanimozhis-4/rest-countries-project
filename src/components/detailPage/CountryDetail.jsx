@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import BorderCountries from "./BorderCountries";
 import { ThemeContext } from "../ThemeMode";
 
-function CountryDetail({ country, borders, wholeCountries }) {
+function CountryDetail({ country, borders, allCountries }) {
   const { isLight } = useContext(ThemeContext);
   const sortedLanguages = country?.languages
     ? Object.values(country.languages).sort()
@@ -62,7 +62,7 @@ function CountryDetail({ country, borders, wholeCountries }) {
       </div>
       <BorderCountries
         borders={borders}
-        wholeCountries={wholeCountries}
+        allCountries={allCountries}
         isLight={isLight}
       />
     </div>
