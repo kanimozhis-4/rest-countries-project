@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaMoon } from "react-icons/fa";
-function Header({ isLight, handleMode }) {
-    
+import { ThemeContext } from "../ThemeMode";
+function Header() {
+  const { isLight, handleMode } = useContext(ThemeContext);
+
   return (
     <header
       className={`flex flex-row  p-8 justify-between

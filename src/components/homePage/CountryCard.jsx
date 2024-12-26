@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../ThemeMode";
 
-function CountryCard({ countries, isLight, wholeCountries }) {
+function CountryCard({ countries, wholeCountries }) {
+  const { isLight } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const handleClick = (country) => {
-    navigate(`/detail`, { state: { country, wholeCountries } });
+    navigate(`/country/${country?.ccn3}`, {
+      state: { country, wholeCountries },
+    });
   };
 
   return (
@@ -26,7 +30,7 @@ function CountryCard({ countries, isLight, wholeCountries }) {
         countries.map((country, index) => (
           <div
             key={index}
-            className={` m-16 mb-4 rounded shadow-md 
+            className={` m-10 mb-4 rounded shadow-md 
         ${isLight ? " bg-white text-black" : "bg-gray-700 text-white "}`}
             onClick={() => {
               handleClick(country);
@@ -37,15 +41,15 @@ function CountryCard({ countries, isLight, wholeCountries }) {
               alt={country.name?.common}
               className="w-full h-40 object-cover rounded-md"
             />
-            <div className="m-8">
-              <h3 className="text-3xl font-semibold mt-4 mb-4 ">
+            <div className="m-8 space-y-2">
+              <h3 className="text-3xl font-semibold ">
                 {country.name?.common}
               </h3>
-              <p className=" mb-2 text-lg">
+              <p className="text-lg">
                 <strong>Population:</strong>{" "}
                 {country.population.toLocaleString()}
               </p>
-              <p className="mb-2 text-lg">
+              <p className="text-lg">
                 <strong>Region:</strong> {country.region}
               </p>
               <p className="text-lg">

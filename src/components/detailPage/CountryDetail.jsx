@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import BorderCountries from "./BorderCountries";
+import { ThemeContext } from "../ThemeMode";
 
-function CountryDetail({ country, borders, wholeCountries, isLight }) {
-
+function CountryDetail({ country, borders, wholeCountries }) {
+  const { isLight } = useContext(ThemeContext);
   const sortedLanguages = country?.languages
     ? Object.values(country.languages).sort()
     : [];
-//   console.log("country", country);
 
   return (
     <div className="lg:w-[75%] lg:ml-20 ">
       <h2 className="text-3xl font-bold mt-12">{country.name?.common}</h2>
       <div className=" flex flex-col mt-8 space-y-14 text-xl lg:flex-row lg:space-y-0 mg:gap-4 lg:gap-28">
-        <div className="flex flex-col space-y-6 text-xl lg:mr-12 lg:text-lg">
+        <div className="flex flex-col space-y-6 text-xl  lg:text-lg">
           <p>
             <span className="font-semibold mr-1">Native Name:</span>{" "}
             {country?.name?.nativeName
